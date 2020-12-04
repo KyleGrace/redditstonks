@@ -6,7 +6,7 @@ We will be looking at Starbucks, Google, Apple, Facebook, Tesla, Netflix, and SP
 popular stocks with large market caps. 
 
 '''
-
+import math
 import json
 import csv
 from datetime import datetime,timedelta
@@ -58,7 +58,7 @@ def main():
 
     count = 0
 
-    with open('wallstreetbets_submission.json') as f, open("sentiment.csv",'w') as csvfile:
+    with open('investing_submission.json') as f, open("InvestingSentimentLog.csv",'w') as csvfile:
         csvwriter = csv.writer(csvfile)
 
         header = ["Date"] + tickers
@@ -97,16 +97,24 @@ def main():
 
             # access content of post
             text = ""
+            strings = []
+
             if 'selftext' in keys:
-                text += post['selftext']
+                strings.append(post['selftext'])
             if 'title' in keys:
-                text += post['title']
+                strings.append(post['title'])
+            text = "".join(strings)
 
             # calculate sentiment score using VADER
             score = analyser.polarity_scores(text)['compound']
 
-            # weight each score by upvotes
-            weighted_score = score*post['score']
+            #upvotes
+            postscore = post['score']
+            if postscore > 0:
+                postscore = math.log(postscore)
+
+            # weight each score by log(upvotes)
+            weighted_score = score*postscore
 
             # add to overall sentiment 
             scores[7] += weighted_score
@@ -117,14 +125,14 @@ def main():
             if tick is not None:
                 ind = ticker_to_index[tick]
                 scores[ind] += weighted_score
-            
+                
             #counting lines
             count += 1
-
-            if count >= 10000:
-                break
+            if count % 10000 == 0:
+                print(count, " Lines Processed")
 
         print(count, " Lines Processed")
+        print("Finished Analysis")
 
 
             
