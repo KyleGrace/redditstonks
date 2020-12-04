@@ -7,3 +7,4 @@ Some of the initial data can be found here: https://docs.google.com/spreadsheets
 Financial Data was pulled from Yahoo Finance
 
 To run the code yourself, extract the archive from Kaggle and modify line 61 with the desired input and output files. 
+  - you'll need to install vadersentiment to run the code \verb{pip install vadersentiment}
