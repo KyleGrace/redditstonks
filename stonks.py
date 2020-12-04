@@ -58,7 +58,7 @@ def main():
 
     count = 0
 
-    with open('investing_submission.json') as f, open("InvestingSentimentLog.csv",'w') as csvfile:
+    with open('wallstreetbets_submission.json') as f, open("SentimentLog.csv",'w') as csvfile:
         csvwriter = csv.writer(csvfile)
 
         header = ["Date"] + tickers
